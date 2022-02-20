@@ -1,0 +1,67 @@
+https://etherscan.io/address/0xdf3407636bbf3a015a8e48a079ef7ba49e687fd3#code
+추가학습 필요 : tokenOfOwnerByIndex(owner, index), erc721 인터페이스 전반 흐름.
+
+*ghostproject.sol
+-상속
+ERC721Enumerable : 체인에 있는 토큰을 열거할 수 있는 기능 제공 
+1.totalsupply : 토큰 공급 수량 반환
+2.tokenOfOwnerByIndex(owner, index) : `_owner`에게 할당된 `_index`번째 NFT의 토큰 id 반환
+3.tokenByIndex(index) : 인덱스에 해당하는 토큰 id 반환
++여기서 인덱스는 항상 totalsupply보다 작아야 한다.
+
+Administration : AccessControl 라이브러리 사용.
+AccessControl은 액세스 제어 설정가능.
+상태변수 : owner, moderator role
+생성자 : msg.sender,컨트랙트를 생성하는 eoa에게 컨트랙트에 대한 admin role을 부여한다.
+_transferOwnership : 액세스 제어권을 다른 주소로 넘길 수 있는 기능 제공
+
+GhostBase : 열거 가능한 memoryType 변수를 정의한다.
+
+-라이브러리
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
+
+-상태변수
+string : TOKEN_NAME, TOKEN_SYMBOL, INVALID_TOKEN_ID, GHOST_PROVENANCE
+uint256 : MAX_PIONEER_ROUND , MAX_GHOSTS ,maxPurchasePerMint, ghostPrice, countGoodMemories, countEvilMemories, randomSeed, currentPioneerRound
+bool : saleIsActive, presaleIsActive
+mapping : _pioneerClaimable, _pioneerClaimed, _ghostMemoryTypes, _ghostMemories
+
+-생성자
+input : TOKEN_NAME, TOKEN_SYMBOL
+function : _mintTeamGhost();
+
+-modifier
+onlyOwner
+onlyOnPresale
+onlyOnSale
+
+-함수
+isGhostsProject
+setProvenanceHash
+setMaxPurchasePerMint
+getMaxGhosts
+setGhostPrice
+flipSaleState
+flipPresaleState
+setRandomSeed
+addToPioneer
+expirePioneerRound
+setTokenUriBase
+getPioneerTicketAvailable
+getPioneerTicketAvailablePerRound
+getPioneerTicketClaimed
+getPioneerTicketExpired
+getPioneerRoundExpireBlocks
+mintGhostForPioneer
+withdraw
+supportsInterface
+mintGhost
+tokenURI
+hasMemory
+memoryPicked
+getMemoryType
+pickMemory
+_mintTeamGhost
+_getRoundToClaim
+_setRandomSeed
