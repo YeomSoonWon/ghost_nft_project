@@ -1,5 +1,24 @@
 https://etherscan.io/address/0xdf3407636bbf3a015a8e48a079ef7ba49e687fd3#code
 추가학습 필요 : tokenOfOwnerByIndex(owner, index), erc721 인터페이스 전반 흐름.
+이더스캔에서 컨트랙트를 확인하면 getter/setter를 중심으로 분석하기 쉽다.
+*get/set 함수 중심 핵심 분석
+a.get 함수 https://etherscan.io/address/0xdf3407636bbf3a015a8e48a079ef7ba49e687fd3#readContract
+-totalsupply : 10,000
+-tokeURI : 토큰 id -> uri
+-tokenOfOwnerByIndex : address + index -> address가 보유한 토큰 index에 해당하는 토큰 id
+-tokenByIndex : index -> tokenid
+-symbol : GHOST
+#-supportsInterface : interfaceId->
+-saleIsActive : false
+#-randomSeed : unitconverter
+-presaleIsActive : false
+-ownerOf : tokenId -> address
+-owner : 0x74807b2b7923763421e1365fb544802e8ac21c7c(contract creator eoa)
+-name : ghostproject
+-memoryPicked : tokenId -> memoryPhrase
+
+b.set 함수 https://etherscan.io/address/0xdf3407636bbf3a015a8e48a079ef7ba49e687fd3#writeContract
+
 
 *ghostproject.sol
 -상속
