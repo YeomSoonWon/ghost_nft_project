@@ -1,4 +1,24 @@
 https://etherscan.io/address/0xdf3407636bbf3a015a8e48a079ef7ba49e687fd3#code
+파일 구성->read/write funciton ->abi분석->opcode
+*파일구성
+1.ghostproject
+2.ERC721Enumerable.sol
+3.Strings
+4.Administration
+5.GhostBase
+6.stringlib
+7.erc721
+8.ierc721enumerable
+9.ierc721
+10.ierc721receiver
+11.ierc721metadata
+12.address
+13.context
+14.erc165
+15.ierc165
+16.AccessControl
+17.iaccesscontrol
+
 추가학습 필요 : tokenOfOwnerByIndex(owner, index), erc721 인터페이스 전반 흐름.
 이더스캔에서 컨트랙트를 확인하면 getter/setter를 중심으로 분석하기 쉽다.
 *get/set 함수 중심 핵심 분석
@@ -16,7 +36,34 @@ a.get 함수 https://etherscan.io/address/0xdf3407636bbf3a015a8e48a079ef7ba49e68
 -owner : 0x74807b2b7923763421e1365fb544802e8ac21c7c(contract creator eoa)
 -name : ghostproject
 -memoryPicked : tokenId -> memoryPhrase
+-maxPurchasePerMint : 1
+#-isGhostsProject : true
+#-isApprovedForAll : owner + operator =>bool
+erc721
+_operatorApprovals는 address : (address:bool) mapping변수이다.
+operator가 오너가 허락한 주소가 맞는지 확인한다.
+#-hasRole : role+account=>bool
+AccessControl.sol에 있는 함수로 granted role을 보유한 주소라면 true를 반환한다.
+_roles는 role이름과 roledata를 mapping하는 변수이다.
+roledata는 address : bool인 mapping변수 members와 adminrole로 구성된 struct타입 변수이다.
+즉 hasrole은 _roles->roledata를 통해 해당 주소가 해당 role을 갖고 있는지 체크한다.
 
+-hasMemory : tokenid=>bool
+-ghostprice : 10000000000000000
+#-getroleadmin : role=>byte
+#-getpooneerticketexpired : address => uint256
+-getPioneerticketclaimed : address => uint256
+-getPionneerticketavailableperround : address => unit256
+-getPioneerRoundExpireBlocks : blocknumbers
+-getMemoryType : tokenid => memoryType
+-getmaxghosts : 10000
+#-getApproved : tokenid =>address _tokenApprovals변수는 mapping tokenid : address이다. 승인된 주소와 id를 mapping해준다.
+erc721에 포함된 함수이다. 
+_exists(tokenid)는 해당 토큰아이디의 오너가 null 주소가 아니라면 true를 맞다면 false를 반환한다.
+만약 true가 나온다면 오너가 있다는 의미이다.
+getApproved는 tokenid에 대한 권한을 가진 또다른 address를 의미한다.
+
+-moderator_role : 0x58c8e11deab7910e89bf18a1168c6e6ef28748f00fd3094549459f01cec5e0aa
 b.set 함수 https://etherscan.io/address/0xdf3407636bbf3a015a8e48a079ef7ba49e687fd3#writeContract
 
 
