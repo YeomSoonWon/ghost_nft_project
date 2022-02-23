@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 https://etherscan.io/address/0xdf3407636bbf3a015a8e48a079ef7ba49e687fd3#code
 파일 구성->read/write funciton ->abi분석->opcode
 *파일구성
@@ -153,4 +154,138 @@ getMemoryType
 pickMemory
 _mintTeamGhost
 _getRoundToClaim
+=======
+https://etherscan.io/address/0xdf3407636bbf3a015a8e48a079ef7ba49e687fd3#code
+파일 구성->read/write funciton ->abi분석->opcode
+*파일구성
+1.ghostproject
+2.ERC721Enumerable.sol
+3.Strings
+4.Administration
+5.GhostBase
+6.stringlib
+7.erc721
+8.ierc721enumerable
+9.ierc721
+10.ierc721receiver
+11.ierc721metadata
+12.address
+13.context
+14.erc165
+15.ierc165
+16.AccessControl
+17.iaccesscontrol
+
+추가학습 필요 : tokenOfOwnerByIndex(owner, index), erc721 인터페이스 전반 흐름.
+이더스캔에서 컨트랙트를 확인하면 getter/setter를 중심으로 분석하기 쉽다.
+*get/set 함수 중심 핵심 분석
+a.get 함수 https://etherscan.io/address/0xdf3407636bbf3a015a8e48a079ef7ba49e687fd3#readContract
+-totalsupply : 10,000
+-tokeURI : 토큰 id -> uri
+-tokenOfOwnerByIndex : address + index -> address가 보유한 토큰 index에 해당하는 토큰 id
+-tokenByIndex : index -> tokenid
+-symbol : GHOST
+#-supportsInterface : interfaceId->
+-saleIsActive : false
+#-randomSeed : unitconverter
+-presaleIsActive : false
+-ownerOf : tokenId -> address
+-owner : 0x74807b2b7923763421e1365fb544802e8ac21c7c(contract creator eoa)
+-name : ghostproject
+-memoryPicked : tokenId -> memoryPhrase
+-maxPurchasePerMint : 1
+#-isGhostsProject : true
+#-isApprovedForAll : owner + operator =>bool
+erc721
+_operatorApprovals는 address : (address:bool) mapping변수이다.
+operator가 오너가 허락한 주소가 맞는지 확인한다.
+#-hasRole : role+account=>bool
+AccessControl.sol에 있는 함수로 granted role을 보유한 주소라면 true를 반환한다.
+_roles는 role이름과 roledata를 mapping하는 변수이다.
+roledata는 address : bool인 mapping변수 members와 adminrole로 구성된 struct타입 변수이다.
+즉 hasrole은 _roles->roledata를 통해 해당 주소가 해당 role을 갖고 있는지 체크한다.
+
+-hasMemory : tokenid=>bool
+-ghostprice : 10000000000000000
+#-getroleadmin : role=>byte
+#-getpooneerticketexpired : address => uint256
+-getPioneerticketclaimed : address => uint256
+-getPionneerticketavailableperround : address => unit256
+-getPioneerRoundExpireBlocks : blocknumbers
+-getMemoryType : tokenid => memoryType
+-getmaxghosts : 10000
+#-getApproved : tokenid =>address _tokenApprovals변수는 mapping tokenid : address이다. 승인된 주소와 id를 mapping해준다.
+erc721에 포함된 함수이다. 
+_exists(tokenid)는 해당 토큰아이디의 오너가 null 주소가 아니라면 true를 맞다면 false를 반환한다.
+만약 true가 나온다면 오너가 있다는 의미이다.
+getApproved는 tokenid에 대한 권한을 가진 또다른 address를 의미한다.
+
+-moderator_role : 0x58c8e11deab7910e89bf18a1168c6e6ef28748f00fd3094549459f01cec5e0aa
+b.set 함수 https://etherscan.io/address/0xdf3407636bbf3a015a8e48a079ef7ba49e687fd3#writeContract
+
+
+*ghostproject.sol
+-상속
+ERC721Enumerable : 체인에 있는 토큰을 열거할 수 있는 기능 제공 
+1.totalsupply : 토큰 공급 수량 반환
+2.tokenOfOwnerByIndex(owner, index) : `_owner`에게 할당된 `_index`번째 NFT의 토큰 id 반환
+3.tokenByIndex(index) : 인덱스에 해당하는 토큰 id 반환
++여기서 인덱스는 항상 totalsupply보다 작아야 한다.
+
+Administration : AccessControl 라이브러리 사용.
+AccessControl은 액세스 제어 설정가능.
+상태변수 : owner, moderator role
+생성자 : msg.sender,컨트랙트를 생성하는 eoa에게 컨트랙트에 대한 admin role을 부여한다.
+_transferOwnership : 액세스 제어권을 다른 주소로 넘길 수 있는 기능 제공
+
+GhostBase : 열거 가능한 memoryType 변수를 정의한다.
+
+-라이브러리
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
+
+-상태변수
+string : TOKEN_NAME, TOKEN_SYMBOL, INVALID_TOKEN_ID, GHOST_PROVENANCE
+uint256 : MAX_PIONEER_ROUND , MAX_GHOSTS ,maxPurchasePerMint, ghostPrice, countGoodMemories, countEvilMemories, randomSeed, currentPioneerRound
+bool : saleIsActive, presaleIsActive
+mapping : _pioneerClaimable, _pioneerClaimed, _ghostMemoryTypes, _ghostMemories
+
+-생성자
+input : TOKEN_NAME, TOKEN_SYMBOL
+function : _mintTeamGhost();
+
+-modifier
+onlyOwner
+onlyOnPresale
+onlyOnSale
+
+-함수
+isGhostsProject
+setProvenanceHash
+setMaxPurchasePerMint
+getMaxGhosts
+setGhostPrice
+flipSaleState
+flipPresaleState
+setRandomSeed
+addToPioneer
+expirePioneerRound
+setTokenUriBase
+getPioneerTicketAvailable
+getPioneerTicketAvailablePerRound
+getPioneerTicketClaimed
+getPioneerTicketExpired
+getPioneerRoundExpireBlocks
+mintGhostForPioneer
+withdraw
+supportsInterface
+mintGhost
+tokenURI
+hasMemory
+memoryPicked
+getMemoryType
+pickMemory
+_mintTeamGhost
+_getRoundToClaim
+>>>>>>> 6e32f330546677aa1560107f6ca299eb3a6433a3
 _setRandomSeed
