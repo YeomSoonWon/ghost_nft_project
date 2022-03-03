@@ -1,5 +1,5 @@
 ### ghost sub project stack<br>
-![20220304083500](https://user-images.githubusercontent.com/96465753/156671381-2f12a244-97f5-4bc8-ab0f-57624c256b87.png)
+![20220304083500](https://user-images.githubusercontent.com/96465753/156671381-2f12a244-97f5-4bc8-ab0f-57624c256b87.png)<br>
 solidity - hardhat, openzeppelin<br>
 interacting with the Ethereum by web3.js or ethers.js<br>
 security - env, dotenv <br>
