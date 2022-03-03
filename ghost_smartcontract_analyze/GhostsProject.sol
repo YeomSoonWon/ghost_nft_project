@@ -7,6 +7,21 @@ import "./Administration.sol";
 import "./GhostBase.sol";
 import "./StringLib.sol";
 
+/*
+-라이브러리
+1.ERC721Enumerable ERC721 상속
+supportsInterface
+tokenOfOwnerByIndex
+totalSupply
+tokenByIndex
+_beforeTokenTransfer
+2.Strings : string관련 오퍼레이션
+toString() : uint256을 String으로 바꾼다. 
+3.Administration : 
+4.GhostBase : 
+5.StringLib : 
+
+*/
 
 /// @title GhostsProject contract
 /// @dev Extends ERC721 Non-Fungible Token Standard basic implementation
