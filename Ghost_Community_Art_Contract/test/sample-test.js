@@ -1,10 +1,9 @@
 //https://hardhat.org/tutorial/testing-contracts.html
 
 // 디버깅 툴
-import "hardhat/console.sol";
 const { expect } = require("chai");
 //ethers는 전역 변수로 사용할 수 있다.
-const { ethers } = require("hardhat");
+const { ethers,console } = require("hardhat");
 
 /**
  * npx hardhat test
