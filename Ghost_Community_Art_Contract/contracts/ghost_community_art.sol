@@ -36,6 +36,6 @@ contract ghost_community_art is ERC721URIStorage, Ownable {
     }
 
     function SetArtGhostIdMap(uint256 GhostId, uint256 ArtId) public {
-        ArtGhostIdMap[GhostId]
+        ArtGhostIdMap[GhostId];
     }
 }
