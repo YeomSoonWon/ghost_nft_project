@@ -8,8 +8,8 @@ ghost pfp의 가치를 올리고 아티스트의 참여를 독려한다.<br>
 
 # Todo List
 1. Depoly smart contract
-- [x] ghost_project contract 커스터마이즈 후 배포
-- [x] ghost_community_art contract 작성 및 배포
+- [] ghost_project contract 커스터마이즈 후 배포
+- [] ghost_community_art contract 작성 및 배포
 
 2. Frontend development
-- [x] ghost_community_art 웹페이지 제작
+- [] ghost_community_art 웹페이지 제작
