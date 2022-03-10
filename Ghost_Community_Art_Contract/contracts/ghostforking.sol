@@ -25,7 +25,7 @@ contract GhostsProject is ERC721Enumerable, Administration, GhostBase {
 
     string public GHOST_PROVENANCE = "";
 
-    uint256 public ghostPrice = 0.01 ether;
+    uint256 public ghostPrice = 0.0001 ether;
 
     uint256 public randomSeed;
 
@@ -41,11 +41,6 @@ contract GhostsProject is ERC721Enumerable, Administration, GhostBase {
 
     modifier onlyOwner(uint256 _tokenId) {
         require(msg.sender == ownerOf(_tokenId), "Not owner");
-        _;
-    }
-
-    modifier onlyOnSale() {
-        require(saleIsActive, "Not in public sale period");
         _;
     }
 
@@ -91,7 +86,7 @@ contract GhostsProject is ERC721Enumerable, Administration, GhostBase {
         return super.supportsInterface(interfaceId);
     }
 
-    function mintGhost(uint256 numberOfTokens) public payable onlyOnSale {
+    function mintGhost(uint256 numberOfTokens) public payable {
         require(totalSupply() + numberOfTokens <= MAX_GHOSTS, "Purchase would exceed max supply of ghosts");
         require(ghostPrice * numberOfTokens <= msg.value, "inefficient ether");
 

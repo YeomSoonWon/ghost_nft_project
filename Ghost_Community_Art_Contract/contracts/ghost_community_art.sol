@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
 
-// 필요한 기능
+// 필요한 기능 추가
 /**
 1.민팅 할 때 ghost의 id와 art의 id를 mapping
 2.전체 발행량 30000개로 제한하는 조건
