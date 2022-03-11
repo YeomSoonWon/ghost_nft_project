@@ -1,6 +1,7 @@
 # Purpose<br>
 <!-- Line -->
-ghost pfp의 가치를 올리고 아티스트의 참여를 독려한다.<br>
+ghost project의 세계관을 넓힌다.<br>
+
 
 # Development Stack<br>
 <!-- Line -->
@@ -8,8 +9,8 @@ ghost pfp의 가치를 올리고 아티스트의 참여를 독려한다.<br>
 
 # Todo List
 1. Depoly smart contract
-- [x] ghost_project contract 커스터마이즈 후 배포
-- [x] ghost_community_art contract 작성 및 배포
+- [x]
+- [x]
 
 2. Frontend development
-- [x] ghost_community_art 웹페이지 제작
+- [x]
