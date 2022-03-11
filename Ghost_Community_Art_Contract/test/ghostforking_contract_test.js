@@ -1,6 +1,5 @@
 const { expect } = require("chai");
 const { ethers,waffle} = require("hardhat");
-const provider = waffle.provider;
 
 
 /**
@@ -17,13 +16,15 @@ describe("GhostsProject contract", function () {
     console.log(GhostsProjectAddress)
 
     const ownerBalance = await GhostsProject_test.balanceOf(owner.address);
-    await GhostsProject_test.connect(addr1).mintGhost(99)
-    await GhostsProject_test.connect(addr2).mintGhost(98)
+    // await GhostsProject_test.connect(addr1).mintGhost(1)
+    // await GhostsProject_test.connect(addr2).mintGhost(1)
 
-    const addr1Balance = await GhostsProject_test.balanceOf(addr1.address);
-    const addr2Balance = await GhostsProject_test.balanceOf(addr2.address);
-    const addr1ETH = await provider.getBalance(addr1.address);
-    const addr2ETH = await provider.getBalance(addr2.address);
+    // const addr1Balance = await GhostsProject_test.balanceOf(addr1.address);
+    // const addr2Balance = await GhostsProject_test.balanceOf(addr2.address);
+
+    console.log(ownerBalance)
+    // console.log(addr1Balance)
+    // console.log(addr2Balance)
   });
 });
 

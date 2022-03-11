@@ -7,6 +7,7 @@ import "./Administration.sol";
 import "./GhostBase.sol";
 import "./StringLib.sol";
 
+//test 진행.
 
 /// @title GhostsProject contract
 /// @dev Extends ERC721 Non-Fungible Token Standard basic implementation
@@ -117,7 +118,7 @@ contract GhostsProject is ERC721Enumerable, Administration, GhostBase {
 
     function _mintTeamGhost() internal onlyRole(DEFAULT_ADMIN_ROLE) {
         require(totalSupply() == 0, "Team ghost already minted");
-        for (uint256 i = 0; i < 100; i++) {
+        for (uint256 i = 0; i < 10; i++) {
             _safeMint(msg.sender, i);  // Team Ghost
         }
     }
