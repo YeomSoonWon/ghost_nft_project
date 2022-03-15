@@ -10,7 +10,7 @@
 
 # Todo List
 1. Depoly smart contract
-- Dapp 설계[x](~3/25)
+- Dapp 설계[x] (~3/25)
 - smart_contract 구현[x]
 - smart_contract 테스트[x]
 - smart_contract 리뷰[x]
