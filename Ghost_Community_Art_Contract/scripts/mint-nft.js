@@ -10,7 +10,6 @@ const web3 = createAlchemyWeb3(API_URL)
 const contract = require("../artifacts/contracts/ghostforking.sol/ghostforking.json")
 const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3"
 const nftContract = new web3.eth.Contract(contract.abi, contractAddress)
-console.log(100)
 async function mintNFT(tokenURI) {
   const nonce = await web3.eth.getTransactionCount(PUBLIC_KEY, "latest") //get latest nonce
 
