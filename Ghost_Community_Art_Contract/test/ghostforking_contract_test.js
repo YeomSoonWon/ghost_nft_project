@@ -1,59 +1,37 @@
 /**
  * https://hardhat.org/tutorial/testing-contracts.html
- * 
- * 1.test 단위별 describe 생성.
- * 2.컨트랙트 연결 및 배포 코드 작성.
- * 3.함수 실행해보기.
- * 4.로컬 노드에 배포해보기.
- * 
+ * 큰 단위의 테스트는 describe로 나누고 그 안의 작은 단위 들은 it을 통해 나눈다.
+ * ghost의 경우 
+ * describe는 ghost forking contract, ghost forking Deployment,ghost forking transcation
+ * ghost ai art contract, ghost ai art Deployment, ghost forking transaction으로 나눈다. 
  */
 
 const { expect } = require("chai");
-const { ethers,waffle} = require("hardhat");
+const { ethers } = require("hardhat");
 
 
-/**
- * ghost forking contract test
- * 
- */
 describe("GhostsProject contract", function () {
-  it("GhostsProject contract error invoked", async function () {
-    const [owner, addr1, addr2] = await ethers.getSigners();
-    const GhostsProject = await ethers.getContractFactory("GhostsProject");
-    const GhostsProject_test = await GhostsProject.deploy();
-    const GhostsProjectAddress = GhostsProject_test.address;
+  it("GhostsProject contract deploy", async function () {
 
-    console.log(GhostsProjectAddress)
+    let Token;
+    let ghostnft;
+    let owner;
+    let addr1;
+    let addr2;
+    let addrs;
 
-    const ownerBalance = await GhostsProject_test.balanceOf(owner.address);
-    // await GhostsProject_test.connect(addr1).mintGhost(1)
-    // await GhostsProject_test.connect(addr2).mintGhost(1)
+    beforeEach(async function () {
+      Token = await ethers.getContractFactory("ghostforking");
+      [owner, addr1, addr2, ...addrs] = await ethers.getSigners();
 
-    const addr1Balance = await GhostsProject_test.balanceOf(addr1.address);
-    const addr2Balance = await GhostsProject_test.balanceOf(addr2.address);
-
-    console.log(ownerBalance)
-    console.log(addr1Balance)
-    console.log(addr2Balance)
+      ghostnft = await Token.deploy();
+    });
   });
 });
+describe("GhostsProject Deployment", function () {
 
-/**
- * ghost_community_art contract test
- * 
- */
- describe("ghost_community_art contract", function () {
-  it("ghost_community_art contract error invoked", async function () {
-    const [owner, addr1, addr2] = await ethers.getSigners();
-    const ghost_community_art = await ethers.getContractFactory("ghost_community_art");
-    const ghost_community_art_test = await ghost_community_art.deploy();
+});
 
-    const ghost_community_art_Address = ghost_community_art_test.address;
-    console.log(ghost_community_art_Address)
-    const ownerBalance = await ghost_community_art_test.balanceOf(owner.address);    
-    console.log(ownerBalance)
+describe("GhostsProject transcation", function () {
 
-
-
-  });
 });
