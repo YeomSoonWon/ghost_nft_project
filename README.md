@@ -1,8 +1,7 @@
-# Problem<br>
-<!-- Line -->
-<br>
-
-# solution<br>
+# 규칙
+1.고스트 홀더만 민팅할 수 있음.<br>
+2.지갑 연결 후 고스트를 선택하면 해당 고스트에 대해 미리 생성돼 있던 ai art가 민팅됨.<br>
+3.
 
 # Development Stack<br>
 <!-- Line -->
