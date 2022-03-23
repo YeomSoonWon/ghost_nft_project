@@ -12,24 +12,19 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 contract ghostart is ERC721URIStorage, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
-    address[] whitelist = new address[](100);
-    
+    mapping(address=>bool) whitelist;
+
     constructor() ERC721("Ghost_Community_Art", "Ghost_Community_Art") {
-        mint(msg.sender, "aaaaa");
 
     }
-// ghost owner 체크하기.
-// 시간 기준으로 토큰 오너들 화이트 리스트 storage에 추가.
-// mapping 
-//     modifier onlyGhostOwner(uint256 _tokenId) {
-//         require(msg.sender == ownerOf(_tokenId), "Not owner");
-//         _;
-//     }
 
     function mint(address recipient, string memory tokenURI)
-        public onlyOwner
         returns (uint256)
     {
+        // onlyowner
+        require(msg.sender == owner, "Ownable: caller is not the owner");
+        // onlyWhitelist
+        require(condition);
         _tokenIds.increment();
 
         uint256 newItemId = _tokenIds.current();
@@ -37,5 +32,10 @@ contract ghostart is ERC721URIStorage, Ownable {
         _setTokenURI(newItemId, tokenURI);
 
         return newItemId;
+    }
+    function addWhiteList(address ){
+        // onlycontractOwner
+        require(condition);
+
     }
 }

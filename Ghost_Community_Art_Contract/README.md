@@ -1,7 +1,2 @@
 ### contract
-
-1. ghost forking contract
-ghost pfp의 코드를 그대로 가져와 테스트할 수 있게 배포한다.
-
-2. ghost_community_art
- 
+1.ghostsart : 화이트리스트에 등록된 지갑만 민팅할 수 있고 화이트 리스트는 컨트랙트 오너만 추가할 수 있다.
