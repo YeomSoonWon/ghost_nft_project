@@ -14,7 +14,7 @@ contract ghostart is ERC721URIStorage, Ownable {
     Counters.Counter private _tokenIds;
     mapping(address=>bool) whitelist;
 
-    constructor() ERC721("Ghost_Community_Art", "Ghost_Community_Art") {
+    constructor() ERC721("ghostsart", "ghostsart") {
 
     }
 
@@ -29,13 +29,20 @@ contract ghostart is ERC721URIStorage, Ownable {
 
         uint256 newItemId = _tokenIds.current();
         _mint(recipient, newItemId);
-        _setTokenURI(newItemId, tokenURI);
+        _setTokenURI(newItemId, getNftUri());
 
         return newItemId;
     }
+
     function addWhiteList(address ){
         // onlycontractOwner
         require(condition);
+
+    }
+
+    //random ipfs file link
+    //pre mint number filter
+    function getNftUri(){
 
     }
 }
