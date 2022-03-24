@@ -12,37 +12,53 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 contract ghostart is ERC721URIStorage, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
-    mapping(address=>bool) whitelist;
+    string private BaseUri;
+    mapping(uint=>address) whitelist;
+
+    //컨트랙트 오너만 접근할 수 있는 함수 addWhiteList, setTokenBaseUri
+    modifier onlyContractOwner(){
+
+    }
 
     constructor() ERC721("ghostsart", "ghostsart") {
 
     }
 
-    function mint(address recipient, string memory tokenURI)
+    function mint(address recipient, uint256 ghost_id)
         returns (uint256)
     {
-        // onlyowner
-        require(msg.sender == owner, "Ownable: caller is not the owner");
-        // onlyWhitelist
-        require(condition);
+        // only ghost_id owner
+        require(whitelist[ghost_id] == msg.sender,"Ownable: caller is not the owner");
+
         _tokenIds.increment();
 
         uint256 newItemId = _tokenIds.current();
         _mint(recipient, newItemId);
-        _setTokenURI(newItemId, getNftUri());
+        _setTokenURI(newItemId, getTokenUri(ghost_id));
 
         return newItemId;
     }
 
-    function addWhiteList(address ){
-        // onlycontractOwner
-        require(condition);
+    function addWhiteList(address owner, uint ghost_id) 
+    onlyContractOwner{
+        whitelist[ghost_id] = owner;
+
+    }
+
+    function getTokenBaseUri(){
+
+    }
+
+    function setTokenBaseUri() private onlyContractOwner{
 
     }
 
     //random ipfs file link
     //pre mint number filter
-    function getNftUri(){
+    function getTokenUri(uint ghost_id){
+        getTokenBaseUri()+ ghost_id
 
     }
+
+
 }

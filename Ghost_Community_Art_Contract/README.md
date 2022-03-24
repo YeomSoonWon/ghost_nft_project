@@ -1,3 +1,4 @@
 ### contract ghostsart 
--화이트리스트에 등록된 지갑만 민팅할 수 있고 화이트 리스트는 컨트랙트 오너만 추가할 수 있다.<br>
--민팅시 랜덤으로 아트가 주어진다.<br>
+1. 접그권한
+addWhiteList, setTokenBaseUri는 컨트랙트 오너만 가능하도록
+mint는 해당 고스트 id 보유자
