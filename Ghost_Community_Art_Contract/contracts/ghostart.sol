@@ -29,29 +29,34 @@ contract ghostart is ERC721URIStorage, Ownable {
     {
         // only ghost_id owner
         require(whitelist[ghost_id] == msg.sender,"Ownable: caller is not the owner");
+        // _tokenIds.increment();
 
-        _tokenIds.increment();
-
-        uint256 newItemId = _tokenIds.current();
-        _mint(recipient, newItemId);
+        // uint256 newItemId = _tokenIds.current();
+        _mint(recipient, ghost_id);
         _setTokenURI(newItemId, getTokenUri(ghost_id));
 
         return newItemId;
     }
 
     function addWhiteList(address owner, uint ghost_id) 
-    onlyContractOwner{
-        whitelist[ghost_id] = owner;
+        private
+        onlyContractOwner{
+            whitelist[ghost_id] = owner;
 
+        }
+
+    function getTokenBaseUri()
+    returns (string)
+        {
+            return BaseUri;
     }
 
-    function getTokenBaseUri(){
-
-    }
-
-    function setTokenBaseUri() private onlyContractOwner{
-
-    }
+    function setTokenBaseUri(string newBaseUri) 
+        private 
+        onlyContractOwner
+        {
+            BaseUril = newBaseUri;
+        }
 
     //random ipfs file link
     //pre mint number filter
