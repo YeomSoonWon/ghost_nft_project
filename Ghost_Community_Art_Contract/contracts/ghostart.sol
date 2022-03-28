@@ -14,14 +14,16 @@ contract ghostart is ERC721URIStorage, Ownable {
     Counters.Counter private _tokenIds;
     string private BaseUri;
     mapping(uint=>address) whitelist;
+    address private owneraddress;
 
     //컨트랙트 오너만 접근할 수 있는 함수 addWhiteList, setTokenBaseUri
     modifier onlyContractOwner(){
-
+        require(owneraddress == msg.sender);
+        _;
     }
 
     constructor() ERC721("ghostsart", "ghostsart") {
-
+        owneraddress = msg.sender;
     }
 
     function mint(address recipient, uint256 ghost_id)
