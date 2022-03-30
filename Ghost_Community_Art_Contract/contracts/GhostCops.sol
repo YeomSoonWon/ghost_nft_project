@@ -6,9 +6,16 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
-//경찰 별 회귀도 : 계급(순경, 경장, 경사, 경위, 치안총감, 경찰 청장)
-//ipfs에 미리 기록해 두고 이때 순서를 랜덤하게 한다.
-//민팅할 때는 번호가 순서대로 증가
+//희귀도 : 계급
+//고스트 홀더만 민팅할 수 있다.
+//컨트랙트의 기본적인 요소에 컨트랙트 홀더가 접근할 수 있도록 한다.(화이트리스트-고스트 홀더, baseuri)
+//modifier - 컨트랙트 홀더만 접근할 수 있는 영역
+
+//var : whitelist, Baseuri, _tokenIds, owneraddress
+//modifier : onlyContractOwner
+//function : mint, addWhiteList, setTokenBaseUri
+//          getTokenBaseUri, getTokenUri,
+
 
 // 필요한 기능 추가
 contract GhostCops is ERC721URIStorage, Ownable {
@@ -68,10 +75,10 @@ contract GhostCops is ERC721URIStorage, Ownable {
 
     //random ipfs file link
     //pre mint number filter
-    function getTokenUri(uint ghost_id)
+    function getTokenUri()
         public
     {
-        getTokenBaseUri()+ ghost_id;
+        getTokenBaseUri();
         return "ddd";
     }
 }
