@@ -4,13 +4,15 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "./Administration.sol";
-import "./GhostBase.sol";
 import "./StringLib.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 
+//whitelist부분 수정하기 only contract owner, adiminstration 학습후 수정, 예시 찾아보기, 내방식으로 구현해보기.
+// https://docs.openzeppelin.com/contracts/2.x/access-control
 
-/// @title GhostsProject contract
+/// @title GhostsCops contract
 /// @dev Extends ERC721 Non-Fungible Token Standard basic implementation
-contract GhostsProject is ERC721Enumerable, Administration, GhostBase {
+contract GhostCops is ERC721Enumerable, Administration {
 
     using Strings for uint256;
     using StringLib for uint256;
@@ -19,24 +21,40 @@ contract GhostsProject is ERC721Enumerable, Administration, GhostBase {
     /// @param tokenUriBase the base URI for tokenURI calls
     event TokenUriBaseSet(string tokenUriBase);
 
-    string public constant TOKEN_NAME = "GhostsProject";
-    string public constant TOKEN_SYMBOL = "GHOST";
+// only whitelist추가하기
+// add whitelist only by contract owner
+// remove whitelist only by contract owner
+// white list is mapping
+// mintghost후 whitelist true -> false 
+    mapping(address => bool) public whitelist;
+
+    string public constant TOKEN_NAME = "GhostCops";
+    string public constant TOKEN_SYMBOL = "GhostCops";
     string public constant INVALID_TOKEN_ID = "Invalid Token ID";
-
-    string public GHOST_PROVENANCE = "";
-
-    uint256 public ghostPrice = 0.01 ether;
+    address private contractOwner;
+    uint256 public maxPurchasePerMint = 1;
+    uint256 public ghostPrice = 0.2 ether;
 
     uint256 public randomSeed;
 
     bool public saleIsActive = false;
+    string private tokenUriBase = "https://ipfs.io/ipfs/QmXtta23KaWfq9nxbqxtLxfwWn8pfbXksALWjKPqck843h/";
 
-    string private tokenUriBase;
-
-    uint256 internal constant MAX_GHOSTS = 10000;
+    uint256 internal constant MAX_GHOSTSCOPS = 100;
 
     constructor() ERC721(TOKEN_NAME, TOKEN_SYMBOL) {
+        contractOwner = msg.sender;
         _mintTeamGhost();
+    }
+
+    modifier onlyContractOwer(address sender){
+        require(contractOwner == msg.sender, "Not contractOwner");
+        _;
+    }
+
+    modifier onlywhitelist(address sender){
+        require(whitelist[sender], "only whitelist");
+        _;
     }
 
     modifier onlyOwner(uint256 _tokenId) {
@@ -49,16 +67,26 @@ contract GhostsProject is ERC721Enumerable, Administration, GhostBase {
         _;
     }
 
-    function isGhostsProject() external pure returns (bool) {
+    function setwhitelist(address whiteaddress) external
+        onlyContractOwer(msg.sender)
+    {
+        whitelist[whiteaddress]=true;
+    }
+
+    function iswhitelist(address senderaddress) public returns(bool){
+        return whitelist[senderaddress];
+    }
+
+   function getContractOwner() public returns (address) {
+        return contractOwner;
+    }
+
+    function isGhostsCops() external pure returns (bool) {
         return true;
     }
 
-    function setProvenanceHash(string memory provenanceHash) external onlyRole(DEFAULT_ADMIN_ROLE) {
-        GHOST_PROVENANCE = provenanceHash;
-    }
-
     function getMaxGhosts() external pure returns (uint256) {
-        return MAX_GHOSTS;
+        return MAX_GHOSTSCOPS;
     }
 
     function setGhostPrice(uint256 _price) external onlyRole(DEFAULT_ADMIN_ROLE) {
@@ -73,11 +101,14 @@ contract GhostsProject is ERC721Enumerable, Administration, GhostBase {
         _setRandomSeed();
     }
 
+
     /// @notice Set the base URI for creating `tokenURI` for each Ghost.
     /// Only invokable by system admin role, when contract is paused and not upgraded.
     /// If successful, emits an `TokenUriBaseSet` event.
-    function setTokenUriBase() external onlyRole(DEFAULT_ADMIN_ROLE) {
-        tokenUriBase = "ipfs://QmVpqXm7VPh4KpVFwtngDjACswsQUDWvrvEGVtxtGArzD6/";
+    /// @param _tokenUriBase base for the ERC721 tokenURI
+    function setTokenUriBase(string calldata _tokenUriBase) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        tokenUriBase = _tokenUriBase;
+        emit TokenUriBaseSet(_tokenUriBase);
     }
 
     function withdraw() public onlyRole(DEFAULT_ADMIN_ROLE) {
@@ -91,24 +122,22 @@ contract GhostsProject is ERC721Enumerable, Administration, GhostBase {
         return super.supportsInterface(interfaceId);
     }
 
-    function mintGhost(uint256 numberOfTokens) public payable onlyOnSale {
-        require(totalSupply() + numberOfTokens <= MAX_GHOSTS, "Purchase would exceed max supply of ghosts");
-        require(ghostPrice * numberOfTokens <= msg.value, "inefficient ether");
+//https://solidity-kr.readthedocs.io/ko/latest/units-and-global-variables.html
+// https://ethereum.org/en/developers/docs/transactions/
+    function mintGhost() public payable
+    onlywhitelist(msg.sender)  {
+        require(totalSupply() + 1 <= MAX_GHOSTSCOPS, "Purchase would exceed max supply of ghosts");
+        require(ghostPrice  <= msg.value, Strings.toString(msg.value));
 
-        uint256 count = 0;
-        for (uint256 i = 0; i < numberOfTokens; i++) {
-            if (totalSupply() < MAX_GHOSTS) {
-                _safeMint(msg.sender, totalSupply());
-                count += 1;
-            }
-        }
-        if (ghostPrice * count < msg.value) {
-            uint256 ethToRefund = msg.value - ghostPrice * count;
+        _safeMint(msg.sender, totalSupply());
+
+        if (ghostPrice < msg.value) {
+            uint256 ethToRefund = msg.value - ghostPrice;
             (bool sent, ) = msg.sender.call{ value: ethToRefund }("");
             require(sent, "Failed to send Ether");
         }
 
-        if (randomSeed == 0 && (totalSupply() == MAX_GHOSTS)) {
+        if (randomSeed == 0 && (totalSupply() == MAX_GHOSTSCOPS)) {
             _setRandomSeed();
         }
     }
@@ -122,10 +151,12 @@ contract GhostsProject is ERC721Enumerable, Administration, GhostBase {
 
     function _mintTeamGhost() internal onlyRole(DEFAULT_ADMIN_ROLE) {
         require(totalSupply() == 0, "Team ghost already minted");
-        for (uint256 i = 0; i < 100; i++) {
+        for (uint256 i = 0; i < 4; i++) {
+                // mintGhost();
             _safeMint(msg.sender, i);  // Team Ghost
         }
     }
+
 
     function _setRandomSeed() private {
         require(randomSeed == 0, "Seed number is already set");
