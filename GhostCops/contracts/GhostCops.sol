@@ -7,9 +7,6 @@ import "./Administration.sol";
 import "./StringLib.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-//whitelist부분 수정하기 only contract owner, adiminstration 학습후 수정, 예시 찾아보기, 내방식으로 구현해보기.
-// https://docs.openzeppelin.com/contracts/2.x/access-control
-
 /// @title GhostsCops contract
 /// @dev Extends ERC721 Non-Fungible Token Standard basic implementation
 contract GhostCops is ERC721Enumerable, Administration {
@@ -21,11 +18,6 @@ contract GhostCops is ERC721Enumerable, Administration {
     /// @param tokenUriBase the base URI for tokenURI calls
     event TokenUriBaseSet(string tokenUriBase);
 
-// only whitelist추가하기
-// add whitelist only by contract owner
-// remove whitelist only by contract owner
-// white list is mapping
-// mintghost후 whitelist true -> false 
     mapping(address => bool) public whitelist;
 
     string public constant TOKEN_NAME = "GhostCops";
@@ -73,11 +65,11 @@ contract GhostCops is ERC721Enumerable, Administration {
         whitelist[whiteaddress]=true;
     }
 
-    function iswhitelist(address senderaddress) public returns(bool){
+    function iswhitelist(address senderaddress) public view returns(bool){
         return whitelist[senderaddress];
     }
 
-   function getContractOwner() public returns (address) {
+   function getContractOwner() public view returns (address) {
         return contractOwner;
     }
 
@@ -97,9 +89,9 @@ contract GhostCops is ERC721Enumerable, Administration {
         saleIsActive = !saleIsActive;
     }
 
-    function setRandomSeed() external onlyRole(DEFAULT_ADMIN_ROLE) {
-        _setRandomSeed();
-    }
+    // function setRandomSeed() external onlyRole(DEFAULT_ADMIN_ROLE) {
+    //     _setRandomSeed();
+    // }
 
 
     /// @notice Set the base URI for creating `tokenURI` for each Ghost.
@@ -122,8 +114,6 @@ contract GhostCops is ERC721Enumerable, Administration {
         return super.supportsInterface(interfaceId);
     }
 
-//https://solidity-kr.readthedocs.io/ko/latest/units-and-global-variables.html
-// https://ethereum.org/en/developers/docs/transactions/
     function mintGhost() public payable
     onlywhitelist(msg.sender)  {
         require(totalSupply() + 1 <= MAX_GHOSTSCOPS, "Purchase would exceed max supply of ghosts");
@@ -137,9 +127,9 @@ contract GhostCops is ERC721Enumerable, Administration {
             require(sent, "Failed to send Ether");
         }
 
-        if (randomSeed == 0 && (totalSupply() == MAX_GHOSTSCOPS)) {
-            _setRandomSeed();
-        }
+        // if (randomSeed == 0 && (totalSupply() == MAX_GHOSTSCOPS)) {
+        //     _setRandomSeed();
+        // }
     }
 
     function tokenURI(uint256 _tokenId)
@@ -157,14 +147,13 @@ contract GhostCops is ERC721Enumerable, Administration {
         }
     }
 
+    // function _setRandomSeed() private {
+    //     require(randomSeed == 0, "Seed number is already set");
 
-    function _setRandomSeed() private {
-        require(randomSeed == 0, "Seed number is already set");
-
-        randomSeed = uint(keccak256(abi.encodePacked(block.timestamp, blockhash(block.number - 1))));
-        // Prevent default sequence
-        if (randomSeed == 0) {
-            randomSeed += 1;
-        }
-    }
+    //     randomSeed = uint(keccak256(abi.encodePacked(block.timestamp, blockhash(block.number - 1))));
+    //     // Prevent default sequence
+    //     if (randomSeed == 0) {
+    //         randomSeed += 1;
+    //     }
+    // }
 }
