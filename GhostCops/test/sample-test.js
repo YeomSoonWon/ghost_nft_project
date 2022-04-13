@@ -8,16 +8,16 @@ const { ethers,console } = require("hardhat");
 /**
  * npx hardhat test
  */
-describe("GhostsProject contract", function () {
-  it("GhostsProject contract error invoked", async function () {
+describe("GhostCops contract", function () {
+  it("GhostCops contract error invoked", async function () {
     //getsingers는 이더리움 account를 나타내는 객체이다.
     const [owner] = await ethers.getSigners();
     // 컨트랙트를 가져온다.
-    const GhostsProject = await ethers.getContractFactory("GhostsProject");
+    const GhostCops = await ethers.getContractFactory("GhostCops");
     // 컨트랙트를 배포한다.
-    const GhostsProject_test = await GhostsProject.deploy();
-    const GhostsProjectAddress = GhostsProject_test.address;
-    console.log(GhostsProjectAddress)
+    const GhostCops_test = await GhostCops.deploy();
+    const GhostCopsAddress = GhostCops_test.address;
+    console.log(GhostCopsAddress)
     
     //owner 계정의 balance를 가져온다.
     const ownerBalance = await hardhatToken.balanceOf(owner.address);
@@ -29,5 +29,8 @@ describe("transaction", function () {
   it("transaction error invoked", async function () {
     //다른 계정 사용하기
     const [owner, addr1, addr2] = await ethers.getSigners();
+
+    
+
   });
 });

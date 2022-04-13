@@ -6,11 +6,11 @@ const PRIVATE_KEY = process.env.PRIVATE_KEY
 const { createAlchemyWeb3 } = require("@alch/alchemy-web3")
 const web3 = createAlchemyWeb3(API_URL)
 
-const contract = require("../artifacts/contracts/ghostforing.sol/ghostforing.json")
-const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3"
+const contract = require("/home/os/ghostcops/ghost_nft_project/GhostCops/artifacts/contracts/GhostCops.sol/GhostCops.json")
+const contractAddress = "0xEF3BF31Fc3d476031b1fa486EF05F1a4f5905523"
 const nftContract = new web3.eth.Contract(contract.abi, contractAddress)
 
-async function mintNFT(tokenURI) {
+async function mintNFT() {
   const nonce = await web3.eth.getTransactionCount(PUBLIC_KEY, "latest") //get latest nonce
 
   //the transaction
@@ -18,8 +18,9 @@ async function mintNFT(tokenURI) {
     from: PUBLIC_KEY,
     to: contractAddress,
     nonce: nonce,
+    value: "10000000000",
     gas: 500000,
-    data: nftContract.methods.mintNFT(PUBLIC_KEY, tokenURI).encodeABI(),
+    data: nftContract.methods.mintGhost().encodeABI(),
   }
 
   const signPromise = web3.eth.accounts.signTransaction(tx, PRIVATE_KEY)
@@ -48,6 +49,4 @@ async function mintNFT(tokenURI) {
     })
 }
 
-mintNFT(
-  "ipfsurl"
-)
+mintNFT()
